@@ -10,7 +10,7 @@ from .database import postgis_query_to_geojson
 load_dotenv(find_dotenv())
 
 DATABASE_URL = os.getenv("DATABASE_URL", None)
-URL_PREFIX = os.getenv("URL_PREFIX", "")
+URL_PREFIX = os.getenv("URL_PREFIX", "/api/v0")
 
 app = FastAPI(docs_url=URL_PREFIX)
 
@@ -22,6 +22,12 @@ app.add_middleware(
     allow_methods=["GET"],
     allow_headers=["*"],
 )
+
+
+@app.get("/")
+def status(
+):
+    return {'status': f'running at {URL_PREFIX}'}
 
 
 @app.get(URL_PREFIX + "/route/")
